@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
@@ -15,7 +16,7 @@ import com.pi.drogaria.DAO.EstadoDAO;
 import com.pi.drogaria.model.entidades.Estado;
 
 @SuppressWarnings("serial")
-@ManagedBean
+@ManagedBean(name="estadoController")
 @ViewScoped
 public class EstadoController implements Serializable {
 
