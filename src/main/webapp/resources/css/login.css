@@ -1,0 +1,60 @@
+@CHARSET "ISO-8859-1";
+
+#principal{
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-left:-260px;
+    margin-top:-125px;
+    width: 520px;
+    height: 250px;
+    border: 2px solid #6495ED;
+    padding: 10px;
+    text-align: left;
+    font-family: calibri;
+    font-size: 13px;
+    border-radius: 50px;
+}
+
+.imagemCent{
+	display: block;
+	width: 100%;
+	
+}
+
+#msg1 
+ {
+    float: left;
+    padding: 10px;
+    font-family: Cambria;
+    font-size: 21px;
+    color: #6495ED;
+    text-align: left;
+ }
+ #msg2 
+ {
+    float: left;
+    padding: 10px;
+    font-family: calibri;
+    color: #6495ED;
+    font-size: 15px;
+    text-align: left;
+ }
+#esquerda {
+    float: left;
+    padding: 10px;
+    height: 100px;
+    border-right: 1px solid #000;
+    background-color: #AAF;
+    text-align: center;
+}
+
+#direita {
+    float: left;
+    padding: 10px;
+    height: 100px;
+    width: 100px;
+    background-color: #AFA;
+    text-align: center;
+}
+ 

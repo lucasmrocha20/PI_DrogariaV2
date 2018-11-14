@@ -15,7 +15,7 @@
 
 				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{estadoController.estados}" var="estado"
-					rows="5">
+					rows="5" paginatorPosition="top">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{estadoController.novo}"

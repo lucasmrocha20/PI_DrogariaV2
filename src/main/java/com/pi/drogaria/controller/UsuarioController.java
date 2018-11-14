@@ -12,16 +12,16 @@ import javax.faces.event.ActionEvent;
 import org.omnifaces.util.Messages;
 
 import com.pi.drogaria.DAO.PessoaDAO;
-import com.pi.drogaria.DAO.UsuarioDAO;
 import com.pi.drogaria.model.entidades.Pessoa;
 import com.pi.drogaria.model.entidades.Usuario;
+import com.pi.drogaria.model.entidades.UsuarioModel;
 
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class UsuarioController implements Serializable {
 
-	private Usuario usuario;
+	private Usuario usuario = new Usuario();
 
 	private List<Pessoa> pessoas;
 
@@ -54,28 +54,24 @@ public class UsuarioController implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			List<Object> usuarios = (List<Object>) usuarioDAO.listar("tipo", Usuario.class);
-
-			List<Usuario> user = getListUsuario (usuarios);			
-			this.setUsuarios(user);
+			UsuarioModel usuarioModel = new UsuarioModel();	
+			this.setUsuarios(usuarioModel.listar());
 			
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os usuários");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void novo() {
 		try {
-			usuario = new Usuario();
 			PessoaDAO pessoaDAO = new PessoaDAO();
-			List<Object> pessoas = (List<Object>) pessoaDAO.listar("nome", Pessoa.class);
+			List<Object> pessoas = pessoaDAO.listar("nome", Pessoa.class);
 
 			List<Pessoa> people = getListPessoa(pessoas);			
 			this.setPessoas(people);
 			
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar criar um novo usuário");
 			erro.printStackTrace();
 		}
@@ -83,23 +79,17 @@ public class UsuarioController implements Serializable {
 
 	public void salvar() {
 		try {
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			usuarioDAO.merge(usuario);
-
-			usuario = new Usuario();
-			List<Object> usuarios = (List<Object>) usuarioDAO.listar("tipo", Usuario.class);
-
-			List<Usuario> user = getListUsuario (usuarios);			
-			this.setUsuarios(user);
+			UsuarioModel usuarioModel = new UsuarioModel();			
+			this.setUsuarios(usuarioModel.salvar(usuario));
 			
 			PessoaDAO pessoaDAO = new PessoaDAO();
-			List<Object> pessoas = (List<Object>) pessoaDAO.listar("nome", Pessoa.class);
+			List<Object> pessoas = pessoaDAO.listar("nome", Pessoa.class);
 
 			List<Pessoa> people = getListPessoa(pessoas);			
 			this.setPessoas(people);
 
 			Messages.addGlobalInfo("Usuário salvo com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o usuário");
 			erro.printStackTrace();
 		}
@@ -126,16 +116,11 @@ public class UsuarioController implements Serializable {
 		try {
 			usuario = (Usuario) evento.getComponent().getAttributes().get("usuarioSelecionado");
 
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			usuarioDAO.excluir(usuario);
-
-			List<Object> usuarios = (List<Object>) usuarioDAO.listar(Usuario.class);
-
-			List<Usuario> user = getListUsuario (usuarios);			
-			this.setUsuarios(user);
+			UsuarioModel usuarioModel = new UsuarioModel();			
+			this.setUsuarios(usuarioModel.excluir(usuario));
 
 			Messages.addGlobalInfo("Usuario excluido com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			Messages.addGlobalError("Erro ao excluir o usuário");
 			erro.printStackTrace();
 		}

@@ -8,33 +8,44 @@
 <h:head>
 	<meta http-equiv="Context-type" content="text/html; charset=UTF-8" />
 	<title>Login</title>
+	<h:outputStylesheet library="css" name="login.css" />
 </h:head>
 
 <h:body>
 
 	<p:growl id="mensagem" />
 
-	<p:dialog header="Autenticação" closable="false" draggable="false"
-		resizable="false" modal="true" visible="true">
-		<h:form>
-			<h:panelGrid columns="2">
-				<p:outputLabel for="cpf" value="CPF:" />
-				<p:inputMask id="cpf" mask="999.999.999-99" required="true"
-					requiredMessage="O campo CPF é obrigatório"
-					value="#{autenticarController.usuario.pessoa.cpf}" />
+	<h:form>
+		<div id="principal">
+			<p:layout style="min-width:400px;min-height:250px;" id="layout">
+				<p:layoutUnit position="west" resizable="true" size="200"
+					minSize="250">
+					<div id="msg1">Seja Bem vindo</div>
+					<br />
+					<div id="msg2">Identifique-se por favor para utilizar o
+						sistema.</div>
+					<br />
+					<h:panelGrid columns="2">
+						<h:outputLabel value="CPF:" for="cpf" />
+						<p:inputMask id="cpf" mask="999.999.999-99"
+							value="#{usuarioController.usuario.pessoa.cpf}" required="true" />
+						<h:outputLabel value="Senha:" for="senha" />
+						<p:password id="senha" maxlength="8"
+							value="#{usuarioController.usuario.senha}" required="true" />
+					</h:panelGrid>
+					<br />
+					<p:commandButton actionListener="#{autenticarController.autenticar()}"
+						value="Acessar" update=":mensagem" />
+					<br />
+				</p:layoutUnit>
+				
+				<p:layoutUnit position="center" resizable="true" size="200"
+					minSize="250">
+					<h:graphicImage library="images" name="banner.jpg" styleClass="imagemCent"/>
+				</p:layoutUnit>
+			</p:layout>
+		</div>
 
-				<p:outputLabel for="senha" value="Senha:" />
-				<p:password id="senha" required="true"
-					requiredMessage="O campo SENHA é obrigatório" maxlength="8"
-					value="#{autenticarController.usuario.senha}" />
-			</h:panelGrid>
-
-			<h:panelGrid columns="1">
-				<p:commandButton value="Acessar" update=":mensagem"
-					actionListener="#{autenticarController.autenticar()}" />
-			</h:panelGrid>
-		</h:form>
-	</p:dialog>
-
+	</h:form>
 </h:body>
 </html>

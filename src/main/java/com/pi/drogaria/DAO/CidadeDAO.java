@@ -6,10 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import com.pi.drogaria.model.entidades.Cidade;
@@ -19,15 +16,18 @@ public class CidadeDAO extends DAOGenerico {
 	// Para quando fizer cadastro da pessoa selecionando estado, aparecer a
 	// cidade relacionado ao estado.
 	@SuppressWarnings("unchecked")
-	public List<Cidade> buscarPorEstado(Long estadoCodigo) {
+	public List<Cidade> buscarPorEstado() {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
-			Criteria consulta = sessao.createCriteria(Cidade.class);
-			consulta.add(Restrictions.eq("estado.codigo", estadoCodigo));
-			consulta.addOrder(Order.asc("nome"));
-			List<Cidade> resultado = consulta.list();
+			CriteriaBuilder builder = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Cidade> criteriaQuery = builder.createQuery(Cidade.class);
+			Root<Cidade> root = criteriaQuery.from(Cidade.class);
+			criteriaQuery.multiselect(builder.count(root));
+			Query<Cidade> query = sessao.createQuery(criteriaQuery);
+			List<Cidade> resultado = (List<Cidade>) query.getSingleResult();
 			return resultado;
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			throw erro;
 		} finally {
 			sessao.close();

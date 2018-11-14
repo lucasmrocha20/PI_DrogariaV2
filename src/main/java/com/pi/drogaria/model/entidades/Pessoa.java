@@ -2,13 +2,21 @@ package com.pi.drogaria.model.entidades;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
-public class Pessoa extends Codigo {
-	
+@Table(name = "Pessoa")
+public class Pessoa {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long codigoPessoa;
+
 	@Column(length = 50, nullable = false)
 	private String nome;
 
@@ -41,11 +49,11 @@ public class Pessoa extends Codigo {
 
 	@Column(length = 100, nullable = false)
 	private String email;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cidade cidade;
-
+	
 	public String getNome() {
 		return nome;
 	}
@@ -135,12 +143,45 @@ public class Pessoa extends Codigo {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Cidade getCidade() {
 		return cidade;
 	}
-	
+
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
+	}
+
+	public Long getCodigoPessoa() {
+		return codigoPessoa;
+	}
+
+	public void setCodigoPessoa(Long codigoPessoa) {
+		this.codigoPessoa = codigoPessoa;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigoPessoa == null) ? 0 : codigoPessoa.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pessoa other = (Pessoa) obj;
+		if (codigoPessoa == null) {
+			if (other.codigoPessoa != null)
+				return false;
+		} else if (!codigoPessoa.equals(other.codigoPessoa))
+			return false;
+		return true;
 	}
 }

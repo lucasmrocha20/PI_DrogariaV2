@@ -7,14 +7,14 @@
 	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
 
 	<ui:define name="conteudo">
-
+		<h:outputScript library="js" name="script.js" />
 		<h:form id="formListagem">
 
-			<p:panel header="Usuários - Listagem">
+			<p:panel header="Funcionário - Listagem">
 
 				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{usuarioController.usuarios}"
-					var="usuario" rows="5">
+					var="usuario" rows="5" paginatorPosition="top">
 
 					<f:facet name="header">
 
@@ -36,6 +36,7 @@
 						filterBy="#{usuario.pessoa.cpf}">
 						<h:outputText value="#{usuario.pessoa.cpf}" />
 					</p:column>
+
 
 					<p:column headerText="Tipo" sortBy="#{usuario.tipoFormatado}">
 						<h:outputText value="#{usuario.tipoFormatado}" />
@@ -69,7 +70,7 @@
 
 		</h:form>
 
-		<p:dialog header="Usuários - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Funcionário - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 
 			<h:form id="formCadastro">

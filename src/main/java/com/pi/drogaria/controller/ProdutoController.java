@@ -9,18 +9,19 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import org.hibernate.HibernateException;
 import org.omnifaces.util.Messages;
 
 import com.pi.drogaria.DAO.FabricanteDAO;
-import com.pi.drogaria.DAO.ProdutoDAO;
 import com.pi.drogaria.model.entidades.Fabricante;
 import com.pi.drogaria.model.entidades.Produto;
+import com.pi.drogaria.model.entidades.ProdutoModel;
 
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class ProdutoController implements Serializable{
-	private Produto  produto;
+	private Produto  produto = new Produto();;
 	private List<Produto> produtos;
 	private List<Fabricante> fabricantes;
 
@@ -52,67 +53,63 @@ public class ProdutoController implements Serializable{
 	@PostConstruct
 	public void listar() {
 		try {
-			ProdutoDAO produtoDAO = new ProdutoDAO();
-			List<Object> produtos = (List<Object>) produtoDAO.listar("descricao", Produto.class);
-
-			List<Produto> prod = getListProduto(produtos);			
-			this.setProdutos(prod);
+			ProdutoModel produtoModel = new ProdutoModel();
 			
-		} catch (RuntimeException erro) {
+			this.setProdutos(produtoModel.listar());
+			
+		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os produtos");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 
 	public void novo() {
 		try {
-			produto = new Produto();
 			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			List<Object>fabricantes = (List<Object>) fabricanteDAO.listar(Fabricante.class);
+			List<Object>fabricantes = fabricanteDAO.listar(Fabricante.class);
 
-			List<Fabricante> fabri = getListFabricante(fabricantes);			
+			List<Fabricante> fabri = getListFabricante(fabricantes);
+			
+			
 			this.setFabricantes(fabri);
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar gerar um novo produto");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void editar(ActionEvent evento){
 		try {
 			produto = (Produto) evento.getComponent().getAttributes().get("produtoSelecionado");
-			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			List<Object> fabricantes = (List<Object>)fabricanteDAO.listar(Fabricante.class);
-
-			List<Fabricante> fabri = getListFabricante(fabricantes);			
-			this.setFabricantes(fabri);
-		} catch (RuntimeException erro) {
+			
+			ProdutoModel produtoModel = new ProdutoModel();
+			this.setProdutos(produtoModel.editar(produto));
+			
+		} catch (HibernateException ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um produto");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}	
 	}
 
 	public void salvar() {
 		try {
-			ProdutoDAO produtoDAO = new ProdutoDAO();
-			produtoDAO.merge(produto);
-			produto = new Produto();
+			ProdutoModel produtoModel = new ProdutoModel();
+			
+			this.setProdutos(produtoModel.salvar(produto));
+			
 			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			List<Object> fabricantes = (List<Object>) fabricanteDAO.listar(Fabricante.class);
+			List<Object> fabricantes = fabricanteDAO.listar(Fabricante.class);
 
 			List<Fabricante> fabri = getListFabricante(fabricantes);			
 			this.setFabricantes(fabri);
-			
-			List<Object> produtos = (List<Object>) produtoDAO.listar(Produto.class);
-
-			List<Produto> prod = getListProduto(produtos);			
-			this.setProdutos(prod);
+	
+			produto = new Produto();
 			
 			Messages.addGlobalInfo("Produto salvo com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar o produto");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 	
@@ -137,17 +134,13 @@ public class ProdutoController implements Serializable{
 	public void excluir(ActionEvent evento) {
 		try {
 			produto = (Produto) evento.getComponent().getAttributes().get("produtoSelecionado");
-			ProdutoDAO produtoDAO = new ProdutoDAO();
-			produtoDAO.excluir(produto);
-			List<Object> produtos = (List<Object>) produtoDAO.listar(Produto.class);
-
-			List<Produto> prod = getListProduto(produtos);			
-			this.setProdutos(prod);
+			ProdutoModel produtoModel = new ProdutoModel();			
+			this.setProdutos(produtoModel.excluir(produto));
 			
 			Messages.addGlobalInfo("Produto removido com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o produto");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 }

@@ -11,8 +11,8 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
-import com.pi.drogaria.DAO.FabricanteDAO;
 import com.pi.drogaria.model.entidades.Fabricante;
+import com.pi.drogaria.model.entidades.FabricanteModel;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -39,13 +39,11 @@ public class FabricanteController implements Serializable{
 	public void listar(){
 		try{
 			
-			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			List<Object>fabricantes = (List<Object>) fabricanteDAO.listar("descricao", Fabricante.class);
+			FabricanteModel fabricanteModel = new FabricanteModel();
 
-			List<Fabricante> fabri = getListFabricante(fabricantes);			
-			this.setFabricantes(fabri);
+			this.setFabricantes(fabricanteModel.listar());
 			
-		}catch(RuntimeException erro){
+		}catch(Exception erro){
 			Messages.addGlobalError("Erro ao listar");
 			erro.printStackTrace();
 		}
@@ -58,18 +56,12 @@ public class FabricanteController implements Serializable{
 	
 	public void salvar(){
 		try{
-			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			fabricanteDAO.merge(fabricante);
-			
-			fabricante = new Fabricante();
-			List<Object> fabricantes = (List<Object>) fabricanteDAO.listar(Fabricante.class);
-			
-			List<Fabricante> fabri = getListFabricante(fabricantes);			
-			this.setFabricantes(fabri);
+			FabricanteModel fabricanteModel = new FabricanteModel();
+
+			this.setFabricantes(fabricanteModel.salvar(fabricante));
 			
 			Messages.addGlobalInfo("Salvo com sucesso");
-			
-		}catch(RuntimeException erro){
+		}catch(Exception erro){
 			Messages.addGlobalError("Erro ao salvar");
 			erro.printStackTrace();
 		}
@@ -87,20 +79,13 @@ public class FabricanteController implements Serializable{
 	
 	public void exclui(ActionEvent evento){
 		try{
-			fabricante = (Fabricante) evento.getComponent().getAttributes().get("fabricanteSelecionado");
-			
-			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			fabricanteDAO.excluir(fabricante);
-			
-			List<Object> fabricantes = (List<Object>) fabricanteDAO.listar(Fabricante.class);
-			
-			List<Fabricante> fabri = getListFabricante(fabricantes);			
-			this.setFabricantes(fabri);
-			
+			FabricanteModel fabricanteModel = new FabricanteModel();
 
+			this.setFabricantes(fabricanteModel.excluir(fabricante));
+			
 			Messages.addGlobalInfo("Excluido com sucesso");
 	
-		}catch(RuntimeException erro){
+		}catch(Exception erro){
 			Messages.addGlobalError("Erro ao excluir");
 			erro.printStackTrace();
 		}

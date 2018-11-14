@@ -38,7 +38,8 @@ public class AutenticarController {
 	@PostConstruct
 	public void iniciar() {
 		usuario = new Usuario();
-		usuario.setPessoa(new Pessoa());
+		usuario.setPessoa(new Pessoa() {
+		});
 	}
 
 	public void autenticar(){
@@ -50,7 +51,7 @@ public class AutenticarController {
 				Messages.addGlobalError("CPF ou SENHA incorreto");
 				return;
 			}
-		Faces.redirect("./pages/template.xhtml");
+		Faces.redirect("./pages/templates/template.xhtml");
 	}catch(IOException erro){
 		Messages.addGlobalError(erro.getMessage());
 	 }

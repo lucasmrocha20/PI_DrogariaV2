@@ -2,10 +2,6 @@ package com.pi.drogaria.DAO;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -20,12 +16,13 @@ public class FuncionarioDAO extends DAOGenerico {
 	public List<Funcionario> listarOrdenado() {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
+			
 			Criteria consulta = sessao.createCriteria(Funcionario.class);
 			consulta.createAlias("pessoa", "p");
 			consulta.addOrder(Order.asc("p.nome"));
 			List<Funcionario> resultado = consulta.list();
 			return resultado;
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			throw erro;
 		} finally {
 			sessao.close();

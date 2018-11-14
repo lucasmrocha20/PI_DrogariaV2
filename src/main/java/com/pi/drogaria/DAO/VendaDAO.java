@@ -2,6 +2,7 @@ package com.pi.drogaria.DAO;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -35,7 +36,7 @@ public class VendaDAO extends DAOGenerico {
 
 			transacao.commit();
 
-		} catch (RuntimeException erro) {
+		} catch (HibernateException erro) {
 			if (transacao != null) {
 				transacao.rollback();
 			}

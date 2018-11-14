@@ -8,9 +8,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@SuppressWarnings("serial")
+
 @Entity
-public class Cliente extends Codigo{
+public class Cliente extends Pessoa{
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
@@ -23,6 +23,7 @@ public class Cliente extends Codigo{
 	@JoinColumn(nullable = false)
 	private Pessoa pessoa;
 
+	
 	public Date getDataCadastro() {
 		return dataCadastro;
 	}

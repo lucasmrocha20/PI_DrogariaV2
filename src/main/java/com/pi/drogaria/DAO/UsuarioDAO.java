@@ -9,28 +9,22 @@ import com.pi.drogaria.model.entidades.Usuario;
 import com.pi.drogaria.util.HibernateUtil;
 
 public class UsuarioDAO extends DAOGenerico {
-	
-	public Usuario autenticar(String cpf, String senha){
-		
+	public Usuario autenticar(String cpf, String senha) {
+
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		try{
+
+		try {
 			Criteria consulta = sessao.createCriteria(Usuario.class);
 			consulta.createAlias("pessoa", "p");
-			
 			consulta.add(Restrictions.eq("p.cpf", cpf));
 			SimpleHash hash = new SimpleHash("md5", senha);
 			consulta.add(Restrictions.eq("senha", hash.toHex()));
-			
 			Usuario resultado = (Usuario) consulta.uniqueResult();
-			
 			return resultado;
-		}catch(RuntimeException erro){
+		} catch (Exception erro) {
 			throw erro;
-		}
-		finally {
+		} finally {
 			sessao.close();
 		}
-		
 	}
-
 }

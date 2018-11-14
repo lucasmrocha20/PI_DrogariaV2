@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import org.hibernate.HibernateException;
 import org.omnifaces.util.Messages;
 
 import com.pi.drogaria.DAO.ClienteDAO;
@@ -27,7 +28,7 @@ import com.pi.drogaria.model.entidades.Venda;
 @ManagedBean
 @ViewScoped
 public class VendaController implements Serializable {
-	private Venda venda;
+	private Venda venda = new Venda();
 
 	private List<Produto> produtos;
 
@@ -81,24 +82,19 @@ public class VendaController implements Serializable {
 	public void novo() {
 		try {
 
-			venda = new Venda();
-
 			venda.setPrecoTotal(new BigDecimal("0.00"));
 
 			ProdutoDAO produtoDAO = new ProdutoDAO();
 
-			List<Object> produtos = (List<Object>) produtoDAO.listar("descricao", Produto.class);
+			List<Object> produtos = produtoDAO.listar("descricao", Produto.class);
 
 			List<Produto> prod = getListProduto(produtos);			
 			this.setProdutos(prod);
 
 			itensVenda = new ArrayList<>();
-
-		} catch (RuntimeException erro) {
-
+		} catch (HibernateException ex) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar carregar a tela de vendas");
-
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
@@ -168,7 +164,6 @@ public class VendaController implements Serializable {
 	}
 
 	public void finalizar() {
-
 		try {
 			venda.setHorario(new Date());
 
@@ -184,10 +179,8 @@ public class VendaController implements Serializable {
 
 			clientes = clienteDAO.listarOrdenado();
 
-		} catch (RuntimeException erro) {
-
-			Messages.addGlobalError("Ocorreu um erro ao tentar finalizar a venda");
-
+		} catch (HibernateException erro) {
+		Messages.addGlobalError("Ocorreu um erro ao tentar finalizar a venda");
 			erro.printStackTrace();
 		}
 	}
@@ -211,7 +204,7 @@ public class VendaController implements Serializable {
 
 			ProdutoDAO produtoDAO = new ProdutoDAO();
 
-			List<Object> produtos = (List<Object>)produtoDAO.listar("descricao", Produto.class);
+			List<Object> produtos = produtoDAO.listar("descricao", Produto.class);
 
 			List<Produto> prod = getListProduto(produtos);			
 			this.setProdutos(prod);
@@ -220,10 +213,8 @@ public class VendaController implements Serializable {
 
 			Messages.addGlobalInfo("Venda realizada com sucesso");
 
-		} catch (RuntimeException erro) {
-
+		} catch (HibernateException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a venda");
-
 			erro.printStackTrace();
 		}
 	}

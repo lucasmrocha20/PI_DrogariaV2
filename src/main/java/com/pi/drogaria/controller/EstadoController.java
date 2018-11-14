@@ -6,17 +6,16 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
-import com.pi.drogaria.DAO.EstadoDAO;
 import com.pi.drogaria.model.entidades.Estado;
+import com.pi.drogaria.model.entidades.EstadoModel;
 
 @SuppressWarnings("serial")
-@ManagedBean(name="estadoController")
+@ManagedBean
 @ViewScoped
 public class EstadoController implements Serializable {
 
@@ -40,20 +39,15 @@ public class EstadoController implements Serializable {
 		this.estados = estados;
 	}
 
-	public EstadoController() {
-		novo();
-	}
-
 	@PostConstruct
 	public void listar() {
 		try {
 
-			EstadoDAO estadoDAO = new EstadoDAO();
-
-			List<Object> estados = (List<Object>) estadoDAO.listar(Estado.class);
-			List<Estado> states = getListEstado(estados);			
-			this.setEstados(states);
-		} catch (RuntimeException erro) {
+			EstadoModel estadoModel = new EstadoModel();
+			
+			this.setEstados(estadoModel.listar());
+			
+		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os estados");
 			erro.printStackTrace();
 		}
@@ -68,17 +62,13 @@ public class EstadoController implements Serializable {
 	public void salvar() {
 
 		try {
-			EstadoDAO estadoDAO = new EstadoDAO();
-			estadoDAO.merge(estado);
-
-			estado = new Estado();
-			List<Object> estados = estadoDAO.listar(Estado.class);
 			
-			List<Estado> states = getListEstado(estados);			
-			this.setEstados(states);
+			EstadoModel estadoModel = new EstadoModel();
+			
+			this.setEstados(estadoModel.salvar(estado));
 
 			Messages.addGlobalInfo("Estado salvo com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o estado");
 			erro.printStackTrace();
 		}
@@ -95,16 +85,12 @@ public class EstadoController implements Serializable {
 
 	public void excluir(ActionEvent evento) {
 		try {
-			estado = (Estado) evento.getComponent().getAttributes().get("estadoSelecionado");
 
-			EstadoDAO estadoDAO = new EstadoDAO();
-			estadoDAO.excluir(estado);
-
-			List<Object> estados = (List<Object>) estadoDAO.listar(Estado.class);
-			List<Estado> states = getListEstado(estados);			
-			this.setEstados(states);
+			EstadoModel estadoModel = new EstadoModel();
+			
+			this.setEstados(estadoModel.excluir(estado));
 			Messages.addGlobalInfo("Estado removido com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o estado");
 			erro.printStackTrace();
 		}

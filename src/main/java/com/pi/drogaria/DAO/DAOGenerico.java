@@ -10,13 +10,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import com.pi.drogaria.model.entidades.Estado;
 import com.pi.drogaria.util.HibernateUtil;
 
 public class DAOGenerico implements DAO<Object> {
 	public DAOGenerico() {
 	}
 
+	@Override
 	public void salvar(Object Object) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -24,7 +24,7 @@ public class DAOGenerico implements DAO<Object> {
 			transacao = sessao.beginTransaction();
 			sessao.save(Object);
 			transacao.commit();
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			if (transacao != null) {
 				transacao.rollback();
 			}
@@ -34,6 +34,7 @@ public class DAOGenerico implements DAO<Object> {
 		}
 	}
 
+	@Override
 	public List<Object> listar(Class clazz) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
@@ -44,7 +45,7 @@ public class DAOGenerico implements DAO<Object> {
 
 			List<Object> resultado = sessao.createQuery(query.select(root)).getResultList();
 			return resultado;
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			throw erro;
 		} finally {
 			sessao.close();
@@ -52,6 +53,7 @@ public class DAOGenerico implements DAO<Object> {
 	}
 
 	// Lista para ordernar no cadastro por ordem alfabética.
+	@Override
 	public List<Object> listar(String campoOrdenacao, Class clazz) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
@@ -63,13 +65,14 @@ public class DAOGenerico implements DAO<Object> {
 			List<Object> resultado = sessao.createQuery(query.select(root)).getResultList();
 
 			return resultado;
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			throw erro;
 		} finally {
 			sessao.close();
 		}
 	}
 
+	@Override
 	public Object buscar(Long codigo) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
@@ -81,13 +84,14 @@ public class DAOGenerico implements DAO<Object> {
 			Query<Long> query = sessao.createQuery(criteriaQuery);
 			long resultado = query.getSingleResult();
 			return resultado;
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			throw erro;
 		} finally {
 			sessao.close();
 		}
 	}
 
+	@Override
 	public void excluir(Object Object) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -95,7 +99,7 @@ public class DAOGenerico implements DAO<Object> {
 			transacao = sessao.beginTransaction();
 			sessao.delete(Object);
 			transacao.commit();
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			if (transacao != null) {
 				transacao.rollback();
 			}
@@ -105,6 +109,7 @@ public class DAOGenerico implements DAO<Object> {
 		}
 	}
 
+	@Override
 	public void editar(Object Object) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -112,7 +117,7 @@ public class DAOGenerico implements DAO<Object> {
 			transacao = sessao.beginTransaction();
 			sessao.update(Object);
 			transacao.commit();
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			if (transacao != null) {
 				transacao.rollback();
 			}
@@ -123,14 +128,15 @@ public class DAOGenerico implements DAO<Object> {
 	}
 
 	// MERGE serve para tanto para salvar quanto para editar.
-	public void merge(Object Object) {
+	@Override
+	public void merge(Object object) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
 		try {
 			transacao = sessao.beginTransaction();
-			sessao.merge(Object);
+			sessao.merge(object);
 			transacao.commit();
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			if (transacao != null) {
 				transacao.rollback();
 			}

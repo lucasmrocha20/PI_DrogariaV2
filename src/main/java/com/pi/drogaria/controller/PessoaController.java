@@ -17,13 +17,15 @@ import com.pi.drogaria.DAO.PessoaDAO;
 import com.pi.drogaria.model.entidades.Cidade;
 import com.pi.drogaria.model.entidades.Estado;
 import com.pi.drogaria.model.entidades.Pessoa;
+import com.pi.drogaria.model.entidades.PessoaModel;
 
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class PessoaController implements Serializable {
 
-	private Pessoa pessoa;
+	private Pessoa pessoa = new Pessoa();
+	PessoaModel pessoaModel = new PessoaModel();
 	private List<Pessoa> pessoas;
 
 	private Estado estado;
@@ -71,110 +73,64 @@ public class PessoaController implements Serializable {
 	}
 
 	@PostConstruct
-	public void Listar() {
+	public void listar() {
 		try {
-			PessoaDAO pessoaDAO = new PessoaDAO();
-			List<Object> pessoas = (List<Object>) pessoaDAO.listar("nome", Pessoa.class);
-
-			List<Pessoa> people = getListPessoa(pessoas);			
-			this.setPessoas(people);
 			
-		} catch (RuntimeException erro) {
+			PessoaModel pessoaModel = new PessoaModel();
+			
+			this.setPessoas(pessoaModel.listar());
+			
+		} catch (Exception ex) {
 			Messages.addGlobalError("Erro ao listar pessoas");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void novo() {
 		try {
-			pessoa = new Pessoa();
-
+			
 			estado = new Estado();
 
 			EstadoDAO estadoDAO = new EstadoDAO();
-			List<Object> estados = (List<Object>) estadoDAO.listar(Estado.class);
+			List<Object> estados = estadoDAO.listar("nome", Estado.class);
 
-			List<Estado> states = getListEstado(estados);			
+			List<Estado> states = getListEstado(estados);
 			this.setEstados(states);
 
 			cidades = new ArrayList<Cidade>();
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu erro ao gerar nova Pessoa.");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void editar(ActionEvent evento) {
 		try {
 			pessoa = (Pessoa) evento.getComponent().getAttributes().get("pessoaSelecionada");
-
-			estado = pessoa.getCidade().getEstado();
-
-			EstadoDAO estadoDAO = new EstadoDAO();
-			List<Object> estados = (List<Object>)estadoDAO.listar("nome", Estado.class);
 			
-			List<Estado> states = getListEstado(estados);			
-			this.setEstados(states);
-
-			CidadeDAO cidadeDAO = new CidadeDAO();
-			cidades = cidadeDAO.buscarPorEstado(estado.getCodigo());
-
-			Messages.addGlobalInfo("Pessoa alterada com sucesso");
-		} catch (RuntimeException erro) {
+			PessoaModel pessoaModel = new PessoaModel();
+			
+			this.setPessoas(pessoaModel.editar(pessoa));
+			
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma pessoa.");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void salvar() {
 		try {
-			PessoaDAO pessoaDAO = new PessoaDAO();
-			pessoaDAO.merge(pessoa);
-
-			List<Object> pessoas = (List<Object>)pessoaDAO.listar("nome", Pessoa.class);
 			
-			List<Pessoa> people = getListPessoa(pessoas);			
-			this.setPessoas(people);
-
-
-			pessoa = new Pessoa();
-
-			estado = new Estado();
-
-			EstadoDAO estadoDAO = new EstadoDAO();
-			List<Object> estados = (List<Object>)estadoDAO.listar(Estado.class);
-
-			List<Estado> states = getListEstado(estados);			
-			this.setEstados(states);
-
-			cidades = new ArrayList<Cidade>();
+			PessoaModel pessoaModel = new PessoaModel();
 			
-			Messages.addGlobalInfo("Salvo com sucesso.");
-		} catch (RuntimeException erro) {
+			this.setPessoas(pessoaModel.salvar(pessoa));
+			
+		
+		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu erro ao salvar.");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 
-	}
-	
-
-	private List<Pessoa> getListPessoa(List<Object> pessoas) {
-		List<Pessoa> people = new ArrayList<>();
-		
-		for (Object obj : pessoas) {
-			people.add((Pessoa) obj);
-		}
-		return people;
-	}
-	
-
-	private List<Estado> getListEstado(List<Object> estados) {
-		List<Estado> states = new ArrayList<>();
-		
-		for (Object obj : estados) {
-			states.add((Estado) obj);
-		}
-		return states;
 	}
 
 	public void excluir(ActionEvent evento) {
@@ -184,16 +140,33 @@ public class PessoaController implements Serializable {
 			PessoaDAO pessoaDAO = new PessoaDAO();
 			pessoaDAO.excluir(pessoa);
 
-			List<Object> pessoas = (List<Object>) pessoaDAO.listar(Pessoa.class);
+			List<Object> pessoas = pessoaDAO.listar(Pessoa.class);
 
-			List<Pessoa> people = getListPessoa(pessoas);			
+			List<Pessoa> people = getListPessoa(pessoas);
 			this.setPessoas(people);
 
-			Messages.addGlobalInfo("Pessoa excluida com sucesso");
-		} catch (RuntimeException erro) {
+			Messages.addGlobalInfo("Pessoa excluída com sucesso");
+		} catch (Exception erro) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar excluir a pessoa");
 			erro.printStackTrace();
 		}
+	}
+	
+	private List<Pessoa> getListPessoa(List<Object> pessoas) {
+		List<Pessoa> people = new ArrayList<>();
+
+		for (Object obj : cidades) {
+			people.add((Pessoa) obj);
+		}
+		return people;
+	}
+	private List<Estado> getListEstado(List<Object> estados) {
+		List<Estado> states = new ArrayList<>();
+		
+		for (Object obj : estados) {
+			states.add((Estado) obj);
+		}
+		return states;
 	}
 
 	// serve para mostrar as cidades de acordo com estado.
@@ -201,11 +174,11 @@ public class PessoaController implements Serializable {
 		try {
 			if (estado != null) {
 				CidadeDAO cidadeDAO = new CidadeDAO();
-				cidades = cidadeDAO.buscarPorEstado(estado.getCodigo());
+				cidades = cidadeDAO.buscarPorEstado();
 			} else {
 				cidades = new ArrayList<>();
 			}
-		} catch (RuntimeException erro) {
+		} catch (Exception erro) {
 			Messages.addGlobalError("erro ao filtrar cidades.");
 			erro.printStackTrace();
 		}

@@ -4,15 +4,21 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@SuppressWarnings("serial")
 @Entity
-public class Venda extends Codigo {
+public class Venda {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int codigoVenda;
+	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date horario;
@@ -27,6 +33,14 @@ public class Venda extends Codigo {
 	@JoinColumn(nullable = false)
 	private Funcionario funcionario;
 
+	public int getCodigoVenda() {
+		return codigoVenda;
+	}
+	
+	public void setCodigoVenda(int codigoVenda) {
+		this.codigoVenda = codigoVenda;
+	}
+	
 	public Date getHorario() {
 		return horario;
 	}
@@ -58,4 +72,51 @@ public class Venda extends Codigo {
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + codigoVenda;
+		result = prime * result + ((funcionario == null) ? 0 : funcionario.hashCode());
+		result = prime * result + ((horario == null) ? 0 : horario.hashCode());
+		result = prime * result + ((precoTotal == null) ? 0 : precoTotal.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Venda other = (Venda) obj;
+		if (cliente == null) {
+			if (other.cliente != null)
+				return false;
+		} else if (!cliente.equals(other.cliente))
+			return false;
+		if (codigoVenda != other.codigoVenda)
+			return false;
+		if (funcionario == null) {
+			if (other.funcionario != null)
+				return false;
+		} else if (!funcionario.equals(other.funcionario))
+			return false;
+		if (horario == null) {
+			if (other.horario != null)
+				return false;
+		} else if (!horario.equals(other.horario))
+			return false;
+		if (precoTotal == null) {
+			if (other.precoTotal != null)
+				return false;
+		} else if (!precoTotal.equals(other.precoTotal))
+			return false;
+		return true;
+	}
+	
 }

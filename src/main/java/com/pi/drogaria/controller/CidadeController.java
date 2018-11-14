@@ -11,16 +11,16 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
-import com.pi.drogaria.DAO.CidadeDAO;
 import com.pi.drogaria.DAO.EstadoDAO;
 import com.pi.drogaria.model.entidades.Cidade;
+import com.pi.drogaria.model.entidades.CidadeModel;
 import com.pi.drogaria.model.entidades.Estado;
 
 @SuppressWarnings("serial")
-@ViewScoped
 @ManagedBean
+@ViewScoped
 public class CidadeController implements Serializable {
-	private Cidade cidade;
+	private Cidade cidade = new Cidade();
 	private List<Cidade> cidades;
 	private List<Estado> estados;
 
@@ -51,67 +51,53 @@ public class CidadeController implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			CidadeDAO cidadeDAO = new CidadeDAO();
+			CidadeModel cidadeModel = new CidadeModel();
 
-			List<Object> cidades = (List<Object>) cidadeDAO.listar("nome",Cidade.class);
-			
+			this.setCidades(cidadeModel.listar());
 
-			List<Cidade> city = getListCidade(cidades);			
-			this.setCidades(city);
-
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar listar as cidades");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void novo() {
 		try {
-			cidade = new Cidade();
-
 			EstadoDAO estadoDAO = new EstadoDAO();
-			List<Object> estados = (List<Object>) estadoDAO.listar("nome", Estado.class);
-			
-			List<Estado> states = getListEstado(estados);			
+			List<Object> estados = estadoDAO.listar("nome", Estado.class);
+
+			List<Estado> states = getListEstado(estados);
 			this.setEstados(states);
 
-
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao gerar uma nova cidade");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	public void salvar() {
 		try {
-			CidadeDAO cidadeDAO = new CidadeDAO();
-			cidadeDAO.merge(cidade);
-
-			cidade = new Cidade();
+			CidadeModel cidadeModel = new CidadeModel();
+			
+			this.setCidades(cidadeModel.salvar(cidade));
 
 			EstadoDAO estadoDAO = new EstadoDAO();
-			List<Object> estados = (List<Object>) estadoDAO.listar(Estado.class);
-
-			List<Object> cidades = (List<Object>) cidadeDAO.listar(Cidade.class);
+			List<Object> estados = estadoDAO.listar(Estado.class);
 			
-			List<Cidade> city = getListCidade(cidades);			
-			this.setCidades(city);
-			
-			List<Estado> states = getListEstado(estados);			
+			List<Estado> states = getListEstado(estados);
 			this.setEstados(states);
-
-
-
+			
+			cidade = new Cidade();
 			Messages.addGlobalInfo("Cidade salva com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar salvar uma nova cidade");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
 	private List<Estado> getListEstado(List<Object> estados) {
 		List<Estado> states = new ArrayList<>();
-		
+
 		for (Object obj : estados) {
 			states.add((Estado) obj);
 		}
@@ -120,49 +106,38 @@ public class CidadeController implements Serializable {
 
 	private List<Cidade> getListCidade(List<Object> cidades) {
 		List<Cidade> city = new ArrayList<>();
-		
+
 		for (Object obj : cidades) {
 			city.add((Cidade) obj);
 		}
 		return city;
 	}
 
-
 	public void excluir(ActionEvent evento) {
 		try {
 			cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionada");
 
-			CidadeDAO cidadeDAO = new CidadeDAO();
-			cidadeDAO.excluir(cidade);
-
-			List<Object> cidades = (List<Object>) cidadeDAO.listar(Cidade.class);
-			
-
-			List<Cidade> city = getListCidade(cidades);			
-			this.setCidades(city);
+			CidadeModel cidadeModel = new CidadeModel();
+			this.setCidades(cidadeModel.excluir(cidade));
 
 			Messages.addGlobalInfo("Cidade removida com sucesso");
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover a cidade");
-			erro.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
-	public void editar(ActionEvent evento){
+	public void editar(ActionEvent evento) {
 		try {
 			cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionada");
 
-			EstadoDAO estadoDAO = new EstadoDAO();
-			List<Object> estados = (List<Object>) estadoDAO.listar(Estado.class);
+			CidadeModel cidadeModel = new CidadeModel();
+			this.setCidades(cidadeModel.editar(cidade));
 			
-
-			List<Estado> states = getListEstado(estados);			
-			this.setEstados(states);
-			
-		} catch (RuntimeException erro) {
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma cidade");
-			erro.printStackTrace();
-		}	
+			ex.printStackTrace();
+		}
 
 	}
 }
