@@ -29,6 +29,10 @@ import com.pi.drogaria.model.entidades.Venda;
 @ViewScoped
 public class VendaController implements Serializable {
 	private Venda venda = new Venda();
+	
+	FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+
+	ClienteDAO clienteDAO = new ClienteDAO();
 
 	private List<Produto> produtos;
 
@@ -171,13 +175,6 @@ public class VendaController implements Serializable {
 
 			venda.setFuncionario(null);
 
-			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-
-			funcionarios = funcionarioDAO.listarOrdenado();
-
-			ClienteDAO clienteDAO = new ClienteDAO();
-
-			clientes = clienteDAO.listarOrdenado();
 
 		} catch (HibernateException erro) {
 		Messages.addGlobalError("Ocorreu um erro ao tentar finalizar a venda");

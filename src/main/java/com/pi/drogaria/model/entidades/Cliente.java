@@ -12,16 +12,12 @@ import javax.persistence.TemporalType;
 @Entity
 public class Cliente extends Pessoa{
 
-	@Column(nullable = false)
+	@Column
 	@Temporal(TemporalType.DATE)
 	private Date dataCadastro;
 
-	@Column(nullable = false)
+	@Column
 	private Boolean liberado;
-
-	@OneToOne
-	@JoinColumn(nullable = false)
-	private Pessoa pessoa;
 
 	
 	public Date getDataCadastro() {
@@ -38,13 +34,5 @@ public class Cliente extends Pessoa{
 
 	public void setLiberado(Boolean liberado) {
 		this.liberado = liberado;
-	}
-
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
-
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
 	}
 }

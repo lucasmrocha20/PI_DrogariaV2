@@ -49,4 +49,9 @@ public class UsuarioModel {
 			List<Usuario> user = getListUsuario (usuarios);	
 			return user;
 		}
+
+	public Usuario autenticar(String cpf, String senha) {
+		
+		return null;
+	}
 }

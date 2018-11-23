@@ -24,43 +24,40 @@
 				styleClass="imagemCentralizada" />
 		</div>
 
-		<div id="cabecalho" class="divCabecalho">
-
-			<h:form id="formMenu">
-
-				<p:menubar>
-					<p:submenu label="Arquivo">
-						<p:menuitem value="Sair" url="/pages/autenticacao.xhtml"/>
-
-					</p:submenu>
-
-
-					<p:submenu label="Cadastros">
-						<p:menuitem value="Estado" url="/pages/estados.xhtml" />
-						<p:menuitem value="Cidade" url="/pages/cidades.xhtml" />
-						<p:menuitem value="Fabricante" url="/pages/fabricantes.xhtml"/>
-						<p:menuitem value="Produto" url="/pages/produtos.xhtml"/>
-						<p:menuitem value="Pessoa" url="/pages/pessoas.xhtml"/>
-						<p:menuitem value="Cliente" url="/pages/clientes.xhtml"/>
-						<p:menuitem value="Funcionário" url="/pages/usuarios.xhtml"/>
-					</p:submenu>
-
-					<p:submenu label="Movimentações">
-						<p:menuitem value="Venda" url="/pages/vendas.xhtml" />
-					</p:submenu>
-
-				</p:menubar>
-
-			</h:form>
-
-		</div>
-
 		<div id="conteudo">
 			<ui:insert name="conteudo" />
 		</div>
+		
+		<div id="lateral">
+			<div id="menu">
 
+				<h3 class="link-titulo">Home</h3>
+				<ul class="box">
+					<li><a href="../pages/autenticacao.xhtml">Sair</a></li>
+				</ul>
+
+				<h3 class="link-titulo">Cadastros</h3>
+				<ul class="box">
+					<li><a href="../pages/estados.xhtml">Estado</a></li>
+					<li><a href="../pages/cidades.xhtml">Cidade</a></li>
+					<li><a href="../pages/fabricantes.xhtml">Fabricante</a></li>
+					<li><a href="../pages/produtos.xhtml">Produto</a></li>
+					<li><a href="../pages/pessoas.xhtml">Pessoa</a></li>
+					<li><a href="../pages/clientes.xhtml">Cliente</a></li>
+					<li><a href="../pages/usuarios.xhtml">Funcionario</a></li>
+					<!-- mais links -->
+				</ul>
+
+				<h3 class="link-titulo">Movimentação</h3>
+				<ul class="box">
+					<li><a href="../pages/vendas.xhtml">Vendas</a></li>
+					<!-- mais links -->
+				</ul>
+
+
+			</div>
+		</div>
 	</div>
-
 </h:body>
 
 </html>

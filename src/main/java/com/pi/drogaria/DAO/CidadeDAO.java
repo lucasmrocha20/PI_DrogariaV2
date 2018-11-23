@@ -10,22 +10,23 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import com.pi.drogaria.model.entidades.Cidade;
+import com.pi.drogaria.model.entidades.Estado;
 import com.pi.drogaria.util.HibernateUtil;
 
 public class CidadeDAO extends DAOGenerico {
 	// Para quando fizer cadastro da pessoa selecionando estado, aparecer a
 	// cidade relacionado ao estado.
-	@SuppressWarnings("unchecked")
-	public List<Cidade> buscarPorEstado() {
+	
+	public List<Cidade> buscarPorEstado(Estado estado2) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			CriteriaBuilder builder = sessao.getCriteriaBuilder();
-
 			CriteriaQuery<Cidade> criteriaQuery = builder.createQuery(Cidade.class);
 			Root<Cidade> root = criteriaQuery.from(Cidade.class);
-			criteriaQuery.multiselect(builder.count(root));
+			criteriaQuery = criteriaQuery.select(root).where(builder.equal(root.get("estado").get("nome"), estado2.getNome()));
+				
 			Query<Cidade> query = sessao.createQuery(criteriaQuery);
-			List<Cidade> resultado = (List<Cidade>) query.getSingleResult();
+			List<Cidade> resultado = (List<Cidade>) query.getResultList();
 			return resultado;
 		} catch (Exception erro) {
 			throw erro;

@@ -28,14 +28,14 @@
 
 					</f:facet>
 
-					<p:column headerText="Nome" filterBy="#{cliente.pessoa.nome}"
-						sortBy="#{cliente.pessoa.nome}">
-						<h:outputText value="#{cliente.pessoa.nome}" />
+					<p:column headerText="Nome" filterBy="#{cliente.nome}"
+						sortBy="#{cliente.nome}">
+						<h:outputText value="#{cliente.nome}" />
 					</p:column>
 
-					<p:column headerText="CPF" filterBy="#{cliente.pessoa.cpf}"
-						sortBy="#{cliente.pessoa.cpf}">
-						<h:outputText value="#{cliente.pessoa.cpf}" />
+					<p:column headerText="CPF" filterBy="#{cliente.cpf}"
+						sortBy="#{cliente.cpf}">
+						<h:outputText value="#{cliente.cpf}" />
 					</p:column>
 
 					<p:column headerText="Data de Cadastro"
@@ -49,7 +49,7 @@
 						<p:selectBooleanCheckbox value="#{cliente.liberado}"
 							disabled="true" />
 					</p:column>
-					
+
 					<p:column headerText="Opções">
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{clienteController.excluir}"
@@ -85,16 +85,13 @@
 
 					<p:outputLabel for="pessoa" value="Pessoa:" />
 					<p:selectOneMenu id="pessoa" filter="true"
-						value="#{clienteController.cliente.pessoa}" required="true"
+						value="#{pessoaController.pessoa}" required="true"
 						requiredMessage="O campo PESSOA é obrigatório"
 						converter="omnifaces.SelectItemsConverter">
-
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma pessoa" />
-
-						<f:selectItems value="#{clienteController.pessoas}" var="pessoa"
+						<f:selectItems value="#{pessoaController.pessoas}" var="pessoa"
 							itemValue="#{pessoa}" itemLabel="#{pessoa.nome} - #{pessoa.cpf}" />
-
 					</p:selectOneMenu>
 
 					<p:outputLabel for="dataCadastro" value="Data de Cadastro:" />

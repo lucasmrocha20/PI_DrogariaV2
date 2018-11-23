@@ -12,6 +12,7 @@ import org.omnifaces.util.Messages;
 import com.pi.drogaria.DAO.UsuarioDAO;
 import com.pi.drogaria.model.entidades.Pessoa;
 import com.pi.drogaria.model.entidades.Usuario;
+import com.pi.drogaria.model.entidades.UsuarioModel;
 
 @ManagedBean
 @SessionScoped
@@ -19,6 +20,7 @@ public class AutenticarController {
 
 	private Usuario usuario;
 	private Usuario usuarioLogado;
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -44,8 +46,8 @@ public class AutenticarController {
 
 	public void autenticar(){
 		try{
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			usuarioLogado = usuarioDAO.autenticar(usuario.getPessoa().getCpf(), usuario.getSenha());
+			UsuarioModel usuarioModel = new UsuarioModel();
+			usuarioLogado = usuarioModel.autenticar(usuario.getPessoa().getCpf(), usuario.getSenha());
 			
 			if(usuarioLogado == null){
 				Messages.addGlobalError("CPF ou SENHA incorreto");

@@ -22,157 +22,91 @@
 
 					<p:column headerText="Descrição" filterBy="#{produto.descricao}"
 						sortBy="#{produto.descricao}">
-
 						<h:outputText value="#{produto.descricao}" />
-
 					</p:column>
-
-
 
 					<p:column headerText="Quantidade" sortBy="#{produto.quantidade}">
-
 						<h:outputText value="#{produto.quantidade}" />
-
 					</p:column>
-
-
 
 					<p:column headerText="Preço" sortBy="#{produto.preco}">
-
 						<h:outputText value="#{produto.preco}">
-
 							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
-
 						</h:outputText>
-
 					</p:column>
-
-
 
 					<p:column headerText="Fabricante"
 						filterBy="#{produto.fabricante.descricao}"
 						sortBy="#{produto.fabricante.descricao}">
-
 						<h:outputText value="#{produto.fabricante.descricao}" />
-
 					</p:column>
 
-
-
 					<p:column headerText="Opções">
-
 						<p:commandButton icon="ui-icon-plus"
 							actionListener="#{vendaController.adicionar}"
 							update=":formulario:tabelaCesta :formulario:painelFinalizacao">
-
 							<f:attribute name="produtoSelecionado" value="#{produto}" />
-
 						</p:commandButton>
-
 					</p:column>
-
 				</p:dataTable>
-
 			</p:panel>
 
-
-
 			<p:panel header="Cesta de Compras">
-
 				<p:dataTable id="tabelaCesta"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
 					value="#{vendaController.itensVenda}" var="itemVenda" rows="5"
 					paginatorPosition="bottom">
-
-
-
 					<p:column headerText="Descrição">
-
 						<h:outputText value="#{itemVenda.produto.descricao}" />
-
 					</p:column>
-
-
 
 					<p:column headerText="Preço Un.">
-
 						<h:outputText value="#{itemVenda.produto.preco}">
-
 							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
-
 						</h:outputText>
-
 					</p:column>
-
-
 
 					<p:column headerText="Qtde.">
-
 						<h:outputText value="#{itemVenda.quantidade}" />
-
 					</p:column>
 
-
-
 					<p:column headerText="Preço Parcial">
-
 						<h:outputText value="#{itemVenda.precoParcial}">
-
 							<f:convertNumber locale="pt_BR" minFractionDigits="2" />
-
 						</h:outputText>
-
 					</p:column>
 
 					<p:column headerText="Opções">
-
 						<p:commandButton icon="ui-icon-minus"
 							actionListener="#{vendaController.remover}"
 							update=":formulario:tabelaCesta :formulario:painelFinalizacao">
-
 							<f:attribute name="itemSelecionado" value="#{itemVenda}" />
-
 						</p:commandButton>
-
 					</p:column>
-
 				</p:dataTable>
-
 			</p:panel>
 
 			<p:panel header="Finalização">
-
 				<h:panelGrid id="painelFinalizacao" columns="3">
-
 					<p:outputLabel value="Total: R$" />
-
 					<h:outputText value="#{vendaController.venda.precoTotal}">
-
 						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
-
 					</h:outputText>
 
 					<p:commandButton value="Finalizar"
 						actionListener="#{vendaController.finalizar}"
 						update=":mensagem :formularioFinalizar:painelFinalizar"
 						oncomplete="PF('dialogo').show();">
-
 						<f:actionListener
 							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-
 					</p:commandButton>
-
 				</h:panelGrid>
-
 			</p:panel>
-
 		</h:form>
 
 		<p:dialog header="Finalizar Venda" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
-
 			<h:form id="formularioFinalizar">
-
 				<h:panelGrid id="painelFinalizar" columns="2">
 					<p:outputLabel value="Horário: " />
 					<h:outputText value="#{vendaController.venda.horario}">
@@ -195,7 +129,7 @@
 							itemLabel="Selecione um funcionário" />
 						<f:selectItems value="#{vendaController.funcionarios}"
 							var="funcionario" itemValue="#{funcionario}"
-							itemLabel="#{funcionario.pessoa.nome} - #{funcionario.pessoa.cpf}" />
+							itemLabel="#{funcionario.nome} - #{funcionario.cpf}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="cliente" value="Cliente:" />
@@ -208,7 +142,7 @@
 							itemLabel="Selecione um cliente" />
 						<f:selectItems value="#{vendaController.clientes}" var="cliente"
 							itemValue="#{cliente}"
-							itemLabel="#{cliente.pessoa.nome} - #{cliente.pessoa.cpf}" />
+							itemLabel="#{cliente.nome} - #{cliente.cpf}" />
 					</p:selectOneMenu>
 
 				</h:panelGrid>

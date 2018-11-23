@@ -25,13 +25,13 @@ import com.pi.drogaria.model.entidades.PessoaModel;
 public class PessoaController implements Serializable {
 
 	private Pessoa pessoa = new Pessoa();
-	PessoaModel pessoaModel = new PessoaModel();
 	private List<Pessoa> pessoas;
-
 	private Estado estado;
 	private List<Estado> estados;
 	private List<Cidade> cidades;
 
+	PessoaModel pessoaModel = new PessoaModel();
+	
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
@@ -88,7 +88,7 @@ public class PessoaController implements Serializable {
 
 	public void novo() {
 		try {
-			
+
 			estado = new Estado();
 
 			EstadoDAO estadoDAO = new EstadoDAO();
@@ -124,7 +124,6 @@ public class PessoaController implements Serializable {
 			PessoaModel pessoaModel = new PessoaModel();
 			
 			this.setPessoas(pessoaModel.salvar(pessoa));
-			
 		
 		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu erro ao salvar.");
@@ -174,7 +173,7 @@ public class PessoaController implements Serializable {
 		try {
 			if (estado != null) {
 				CidadeDAO cidadeDAO = new CidadeDAO();
-				cidades = cidadeDAO.buscarPorEstado();
+				cidades = cidadeDAO.buscarPorEstado(estado);
 			} else {
 				cidades = new ArrayList<>();
 			}

@@ -60,6 +60,8 @@ public class FabricanteController implements Serializable{
 
 			this.setFabricantes(fabricanteModel.salvar(fabricante));
 			
+			fabricante = new Fabricante();
+			
 			Messages.addGlobalInfo("Salvo com sucesso");
 		}catch(Exception erro){
 			Messages.addGlobalError("Erro ao salvar");

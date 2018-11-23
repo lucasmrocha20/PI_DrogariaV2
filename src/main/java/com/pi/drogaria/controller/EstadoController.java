@@ -66,7 +66,9 @@ public class EstadoController implements Serializable {
 			EstadoModel estadoModel = new EstadoModel();
 			
 			this.setEstados(estadoModel.salvar(estado));
-
+			
+			estado = new Estado();
+			
 			Messages.addGlobalInfo("Estado salvo com sucesso");
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o estado");
