@@ -85,7 +85,7 @@
 
 					<p:outputLabel for="pessoa" value="Pessoa:" />
 					<p:selectOneMenu id="pessoa" filter="true"
-						value="#{pessoaController.pessoa}" required="true"
+						value="#{clienteController.selectedPessoa}" required="true"
 						requiredMessage="O campo PESSOA é obrigatório"
 						converter="omnifaces.SelectItemsConverter">
 						<f:selectItem noSelectionOption="true"

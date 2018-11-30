@@ -27,14 +27,14 @@
 
 					</f:facet>
 
-					<p:column headerText="Nome" sortBy="#{usuario.pessoa.nome}"
-						filterBy="#{usuario.pessoa.nome}">
-						<h:outputText value="#{usuario.pessoa.nome}" />
+					<p:column headerText="Nome" sortBy="#{usuario.nome}"
+						filterBy="#{usuario.nome}">
+						<h:outputText value="#{usuario.nome}" />
 					</p:column>
 
-					<p:column headerText="CPF" sortBy="#{usuario.pessoa.cpf}"
-						filterBy="#{usuario.pessoa.cpf}">
-						<h:outputText value="#{usuario.pessoa.cpf}" />
+					<p:column headerText="CPF" sortBy="#{usuario.cpf}"
+						filterBy="#{usuario.cpf}">
+						<h:outputText value="#{usuario.cpf}" />
 					</p:column>
 
 
@@ -79,12 +79,12 @@
 
 					<p:outputLabel for="pessoa" value="Pessoa:" />
 					<p:selectOneMenu id="pessoa" filter="true"
-						value="#{usuarioController.usuario.pessoa}" required="true"
+						value="#{usuarioController.selectedPessoa}" required="true"
 						requiredMessage="O campo PESSOA é obrigatório"
 						converter="omnifaces.SelectItemsConverter">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma pessoa" />
-						<f:selectItems value="#{usuarioController.pessoas}" var="pessoa"
+						<f:selectItems value="#{pessoaController.pessoas}" var="pessoa"
 							itemValue="#{pessoa}" itemLabel="#{pessoa.nome} - #{pessoa.cpf}" />
 					</p:selectOneMenu>
 

@@ -8,16 +8,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class HibernateUtil {
 	private static SessionFactory fabricaDeSessoes = criarFabricaDeSessoes();
-
 	public static SessionFactory getFabricaDeSessoes() {
 		return fabricaDeSessoes;
 	}
-
 	private static SessionFactory criarFabricaDeSessoes() {
-		try {
-			StandardServiceRegistry standardRegistry = 
+		try{ 
+			StandardServiceRegistry standardRegistry =
 					new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-			Metadata metaData = 
+			Metadata metaData =
 					new MetadataSources(standardRegistry).getMetadataBuilder().build();
 			fabricaDeSessoes = metaData.getSessionFactoryBuilder().build();
 		} catch (Throwable th) {

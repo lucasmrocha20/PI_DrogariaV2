@@ -18,6 +18,7 @@ public class CidadeDAO extends DAOGenerico {
 	// cidade relacionado ao estado.
 	
 	public List<Cidade> buscarPorEstado(Estado estado2) {
+
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			CriteriaBuilder builder = sessao.getCriteriaBuilder();
@@ -25,7 +26,7 @@ public class CidadeDAO extends DAOGenerico {
 			Root<Cidade> root = criteriaQuery.from(Cidade.class);
 			criteriaQuery = criteriaQuery.select(root).where(builder.equal(root.get("estado").get("nome"), estado2.getNome()));
 				
-			Query<Cidade> query = sessao.createQuery(criteriaQuery);
+			Query<Cidade> query = (Query<Cidade>) sessao.createQuery(criteriaQuery);
 			List<Cidade> resultado = (List<Cidade>) query.getResultList();
 			return resultado;
 		} catch (Exception erro) {

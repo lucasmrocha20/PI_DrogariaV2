@@ -40,15 +40,16 @@ public class AutenticarController {
 	@PostConstruct
 	public void iniciar() {
 		usuario = new Usuario();
-		usuario.setPessoa(new Pessoa() {
-		});
+//		usuario.setCodigoPessoa(new Pessoa(){
+//		});
 	}
 
 	public void autenticar(){
 		try{
 			UsuarioModel usuarioModel = new UsuarioModel();
-			usuarioLogado = usuarioModel.autenticar(usuario.getPessoa().getCpf(), usuario.getSenha());
+//			usuarioLogado = usuarioModel.autenticar(usuario.getCodigoPessoa().getClass(), usuario.getSenha());
 			
+			usuarioLogado = usuarioModel.autenticar(usuario.getCpf(), usuario.getSenha());
 			if(usuarioLogado == null){
 				Messages.addGlobalError("CPF ou SENHA incorreto");
 				return;

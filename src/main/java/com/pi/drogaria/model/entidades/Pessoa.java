@@ -15,7 +15,7 @@ public class Pessoa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long codigoPessoa;
+	private int codigoPessoa;
 
 	@Column(length = 50, nullable = false)
 	private String nome;
@@ -150,11 +150,11 @@ public class Pessoa {
 		this.cidade = cidade;
 	}
 
-	public Long getCodigoPessoa() {
+	public int getCodigoPessoa() {
 		return codigoPessoa;
 	}
 
-	public void setCodigoPessoa(Long codigoPessoa) {
+	public void setCodigoPessoa(int codigoPessoa) {
 		this.codigoPessoa = codigoPessoa;
 	}
 
@@ -166,7 +166,7 @@ public class Pessoa {
 		result = prime * result + ((celular == null) ? 0 : celular.hashCode());
 		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
 		result = prime * result + ((cidade == null) ? 0 : cidade.hashCode());
-		result = prime * result + ((codigoPessoa == null) ? 0 : codigoPessoa.hashCode());
+		result = prime * result + codigoPessoa;
 		result = prime * result + ((complemento == null) ? 0 : complemento.hashCode());
 		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
@@ -207,10 +207,7 @@ public class Pessoa {
 				return false;
 		} else if (!cidade.equals(other.cidade))
 			return false;
-		if (codigoPessoa == null) {
-			if (other.codigoPessoa != null)
-				return false;
-		} else if (!codigoPessoa.equals(other.codigoPessoa))
+		if (codigoPessoa != other.codigoPessoa)
 			return false;
 		if (complemento == null) {
 			if (other.complemento != null)
@@ -254,4 +251,5 @@ public class Pessoa {
 			return false;
 		return true;
 	}
+
 }

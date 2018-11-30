@@ -15,13 +15,12 @@ import org.hibernate.HibernateException;
 import org.omnifaces.util.Messages;
 
 import com.pi.drogaria.DAO.ClienteDAO;
-import com.pi.drogaria.DAO.FuncionarioDAO;
 import com.pi.drogaria.DAO.ProdutoDAO;
 import com.pi.drogaria.DAO.VendaDAO;
 import com.pi.drogaria.model.entidades.Cliente;
-import com.pi.drogaria.model.entidades.Funcionario;
 import com.pi.drogaria.model.entidades.ItemVenda;
 import com.pi.drogaria.model.entidades.Produto;
+import com.pi.drogaria.model.entidades.UsuarioModel;
 import com.pi.drogaria.model.entidades.Venda;
 
 @SuppressWarnings("serial")
@@ -30,7 +29,7 @@ import com.pi.drogaria.model.entidades.Venda;
 public class VendaController implements Serializable {
 	private Venda venda = new Venda();
 	
-	FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+	UsuarioModel usuarioModel = new UsuarioModel();
 
 	ClienteDAO clienteDAO = new ClienteDAO();
 
@@ -39,8 +38,6 @@ public class VendaController implements Serializable {
 	private List<ItemVenda> itensVenda;
 
 	private List<Cliente> clientes;
-
-	private List<Funcionario> funcionarios;
 
 	public Venda getVenda() {
 		return venda;
@@ -74,12 +71,12 @@ public class VendaController implements Serializable {
 		this.clientes = clientes;
 	}
 
-	public List<Funcionario> getFuncionarios() {
-		return funcionarios;
+	public UsuarioModel getUsuarioModel() {
+		return usuarioModel;
 	}
 
-	public void setFuncionarios(List<Funcionario> funcionarios) {
-		this.funcionarios = funcionarios;
+	public void setUsuarioModel(UsuarioModel usuarioModel) {
+		this.usuarioModel = usuarioModel;
 	}
 
 	@PostConstruct
@@ -173,7 +170,7 @@ public class VendaController implements Serializable {
 
 			venda.setCliente(null);
 
-			venda.setFuncionario(null);
+			venda.setUsuario(null);
 
 
 		} catch (HibernateException erro) {

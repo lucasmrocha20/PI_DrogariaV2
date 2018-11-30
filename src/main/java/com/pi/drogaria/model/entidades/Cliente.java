@@ -35,4 +35,19 @@ public class Cliente extends Pessoa{
 	public void setLiberado(Boolean liberado) {
 		this.liberado = liberado;
 	}
+
+	public void copiaDados(Pessoa pessoa) {
+		this.setNome(pessoa.getNome());
+		this.setCidade(pessoa.getCidade());
+		this.setCpf(pessoa.getCpf());
+		this.setRg(pessoa.getRg());
+		this.setRua(pessoa.getRua());
+		this.setNumero(pessoa.getNumero());
+		this.setBairro(pessoa.getBairro());
+		this.setCep(pessoa.getCep());
+		this.setComplemento(pessoa.getComplemento());
+		this.setTelefone(pessoa.getTelefone());
+		this.setCelular(pessoa.getCelular());
+		this.setEmail(pessoa.getEmail());
+	}
 }

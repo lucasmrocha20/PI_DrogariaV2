@@ -31,7 +31,7 @@ public class Venda {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Funcionario funcionario;
+	private Usuario usuario;
 
 	public int getCodigoVenda() {
 		return codigoVenda;
@@ -65,12 +65,13 @@ public class Venda {
 		this.cliente = cliente;
 	}
 
-	public Funcionario getFuncionario() {
-		return funcionario;
+
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
@@ -79,9 +80,9 @@ public class Venda {
 		int result = 1;
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + codigoVenda;
-		result = prime * result + ((funcionario == null) ? 0 : funcionario.hashCode());
 		result = prime * result + ((horario == null) ? 0 : horario.hashCode());
 		result = prime * result + ((precoTotal == null) ? 0 : precoTotal.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
 
@@ -101,11 +102,6 @@ public class Venda {
 			return false;
 		if (codigoVenda != other.codigoVenda)
 			return false;
-		if (funcionario == null) {
-			if (other.funcionario != null)
-				return false;
-		} else if (!funcionario.equals(other.funcionario))
-			return false;
 		if (horario == null) {
 			if (other.horario != null)
 				return false;
@@ -116,7 +112,13 @@ public class Venda {
 				return false;
 		} else if (!precoTotal.equals(other.precoTotal))
 			return false;
+		if (usuario == null) {
+			if (other.usuario != null)
+				return false;
+		} else if (!usuario.equals(other.usuario))
+			return false;
 		return true;
 	}
-	
+
+		
 }

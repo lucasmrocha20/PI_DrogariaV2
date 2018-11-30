@@ -81,12 +81,5 @@ public class Cidade {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Cidade [codigoCidade=" + codigoCidade + ", nome=" + nome + ", estado=" + estado + "]";
-	}
-	
-	
+	}	
 }

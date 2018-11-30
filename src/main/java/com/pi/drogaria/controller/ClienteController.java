@@ -11,10 +11,10 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
-import com.pi.drogaria.DAO.PessoaDAO;
 import com.pi.drogaria.model.entidades.Cliente;
 import com.pi.drogaria.model.entidades.ClienteModel;
 import com.pi.drogaria.model.entidades.Pessoa;
+import com.pi.drogaria.model.entidades.PessoaModel;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -22,7 +22,7 @@ import com.pi.drogaria.model.entidades.Pessoa;
 public class ClienteController implements Serializable {
 	private Cliente cliente = new Cliente();
 	private List<Cliente> clientes;
-	private List<Pessoa> pessoas;
+	private Pessoa selectedPessoa = new Pessoa();
 
 	public Cliente getCliente() {
 		return cliente;
@@ -36,13 +36,13 @@ public class ClienteController implements Serializable {
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-	public List<Pessoa> getPessoas() {
-		return pessoas;
-	}
-	public void setPessoas(List<Pessoa> pessoas) {
-		this.pessoas = pessoas;
-	}
 
+	public Pessoa getSelectedPessoa() {
+		return selectedPessoa;
+	}
+	public void setSelectedPessoa(Pessoa selectedPessoa) {
+		this.selectedPessoa = selectedPessoa;
+	}
 	@PostConstruct
 	public void listar() {
 		try {
@@ -58,12 +58,12 @@ public class ClienteController implements Serializable {
 	public void novo() {
 		try {
 
-			PessoaDAO pessoaDAO = new PessoaDAO();
+			PessoaModel pessoaModel = new PessoaModel();
 
-			List<Object> pessoas = pessoaDAO.listar("nome", Pessoa.class);
+			List<Pessoa> pessoas = pessoaModel.listar();
 
 			List<Pessoa> people = getListPessoa(pessoas);			
-			this.setPessoas(people);
+			//this.setPessoa((Pessoa) people);
 
 		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar criar um novo cliente");
@@ -76,16 +76,14 @@ public class ClienteController implements Serializable {
 
 			ClienteModel clienteModel = new ClienteModel();
 			
-			cliente = new Cliente();
-			this.setClientes(clienteModel.salvar(cliente));
-
-			PessoaDAO pessoaDAO = new PessoaDAO();
-
-			List<Object>pessoas = pessoaDAO.listar("nome", Pessoa.class);
-
-			List<Pessoa> people = getListPessoa(pessoas);			
-			this.setPessoas(people);
+			cliente.copiaDados(this.selectedPessoa);
 			
+			this.setClientes(clienteModel.salvar(cliente));
+			
+			PessoaModel pm = new PessoaModel();
+			pm.excluir(selectedPessoa);
+			
+			cliente = new Cliente();			
 			Messages.addGlobalInfo("Cliente salvo com sucesso");
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o cliente");
@@ -93,7 +91,7 @@ public class ClienteController implements Serializable {
 		}
 	}
 	
-	private List<Pessoa> getListPessoa(List<Object> pessoas) {
+	private List<Pessoa> getListPessoa(List<Pessoa> pessoas) {
 		List<Pessoa> people = new ArrayList<>();
 		
 		for (Object obj : pessoas) {
