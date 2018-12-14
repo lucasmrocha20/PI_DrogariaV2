@@ -19,6 +19,7 @@ public class UsuarioModel {
 	public List<Usuario> listar() {
 
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
 		List<Object> usuarios = usuarioDAO.listar("tipo", Usuario.class);
 
 		List<Usuario> user = getListUsuario(usuarios);
@@ -49,9 +50,4 @@ public class UsuarioModel {
 			List<Usuario> user = getListUsuario (usuarios);	
 			return user;
 		}
-
-	public Usuario autenticar(String cpf, String senha) {
-		
-		return null;
-	}
 }

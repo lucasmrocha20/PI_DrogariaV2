@@ -121,13 +121,13 @@
 
 					<p:outputLabel for="funcionario" value="Funcionário:" />
 					<p:selectOneMenu id="funcionario"
-						value="#{vendaController.venda.funcionario}"
+						value="#{vendaController.venda.usuario}"
 						converter="omnifaces.SelectItemsConverter" filter="true"
 						filterMatchMode="contains" required="true"
 						requiredMessage="O campo FUNCIONÁRIO é obrigatório">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um funcionário" />
-						<f:selectItems value="#{vendaController.funcionarios}"
+						<f:selectItems value="#{vendaController.usuarios}"
 							var="funcionario" itemValue="#{funcionario}"
 							itemLabel="#{funcionario.nome} - #{funcionario.cpf}" />
 					</p:selectOneMenu>

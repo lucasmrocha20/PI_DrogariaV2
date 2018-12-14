@@ -20,7 +20,7 @@
 
 					<f:facet name="header">
 
-						<p:commandButton value="Novo" actionListener="#{cidadeController.novo()}"
+						<p:commandButton value="Novo" actionListener="#{cidadeController.novo}"
 							oncomplete="PF('dialogo').show();"
 							update=":mensagem :formCadastro:painel">
 
@@ -52,7 +52,7 @@
 					<p:column headerText="Opções">
 
 						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{cidadeController.excluir()}"
+							actionListener="#{cidadeController.excluir}"
 							update=":mensagem :formListagem:tabela">
 
 							<p:confirm header="Confirmação" message="Deseja excluir a cidade"
@@ -63,7 +63,7 @@
 						</p:commandButton>
 
 						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{cidadeController.editar()}"
+							actionListener="#{cidadeController.editar}"
 							update=":mensagem :formCadastro:painel"
 							oncomplete="PF('dialogo').show();">
 
@@ -126,7 +126,7 @@
 				<h:panelGrid columns="2">
 
 					<p:commandButton value="Salvar"
-						actionListener="#{cidadeController.salvar()}"
+						actionListener="#{cidadeController.salvar}"
 						update=":mensagem :formCadastro:painel :formListagem:tabela" />
 
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />

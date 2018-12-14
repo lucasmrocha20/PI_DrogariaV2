@@ -72,6 +72,12 @@ public class Produto {
 	}
 
 	@Override
+	public String toString() {
+		return "Produto [codigoProduto=" + codigoProduto + ", descricao=" + descricao + ", quantidade=" + quantidade
+				+ ", preco=" + preco + ", fabricante=" + fabricante + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

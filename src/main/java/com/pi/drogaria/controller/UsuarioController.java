@@ -70,8 +70,9 @@ public class UsuarioController implements Serializable {
 
 			List<Pessoa> pessoas = pessoaModel.listar();
 
-			List<Pessoa> people = getListPessoa(pessoas);
-			// this.setPessoa((Pessoa) people);
+			List<Pessoa> people = getListPessoa(pessoas);			
+//			this.setSelectedPessoa((Pessoa) people);
+			
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar criar um novo usuário");
 			erro.printStackTrace();

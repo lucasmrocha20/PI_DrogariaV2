@@ -44,7 +44,7 @@ public class FabricanteController implements Serializable{
 			this.setFabricantes(fabricanteModel.listar());
 			
 		}catch(Exception erro){
-			Messages.addGlobalError("Erro ao listar");
+			Messages.addGlobalError("Erro ao listar fabricantes");
 			erro.printStackTrace();
 		}
 	}
@@ -62,9 +62,9 @@ public class FabricanteController implements Serializable{
 			
 			fabricante = new Fabricante();
 			
-			Messages.addGlobalInfo("Salvo com sucesso");
+			Messages.addGlobalInfo("Fabricante salvo com sucesso");
 		}catch(Exception erro){
-			Messages.addGlobalError("Erro ao salvar");
+			Messages.addGlobalError("Erro ao salvar um fabricante");
 			erro.printStackTrace();
 		}
 	}
@@ -81,20 +81,24 @@ public class FabricanteController implements Serializable{
 	
 	public void exclui(ActionEvent evento){
 		try{
+			fabricante = (Fabricante) evento.getComponent().getAttributes().get("fabricanteSelecionado");
+			
 			FabricanteModel fabricanteModel = new FabricanteModel();
 
 			this.setFabricantes(fabricanteModel.excluir(fabricante));
 			
-			Messages.addGlobalInfo("Excluido com sucesso");
+			Messages.addGlobalInfo("Fabricante excluido com sucesso");
 	
 		}catch(Exception erro){
-			Messages.addGlobalError("Erro ao excluir");
+			Messages.addGlobalError("Erro ao excluir um fabricante");
 			erro.printStackTrace();
 		}
 	}
 	
 	public void editar(ActionEvent evento){
 		fabricante = (Fabricante) evento.getComponent().getAttributes().get("fabricanteSelecionado");
+		
+		Messages.addGlobalInfo("Fabricante alterado com sucesso");
 	}
 	
 }

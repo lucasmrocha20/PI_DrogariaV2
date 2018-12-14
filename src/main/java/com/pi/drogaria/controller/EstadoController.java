@@ -69,7 +69,7 @@ public class EstadoController implements Serializable {
 			
 			estado = new Estado();
 			
-			Messages.addGlobalInfo("Estado salvo com sucesso");
+			Messages.addGlobalInfo("Estado salvo com sucesso.");
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o estado");
 			erro.printStackTrace();
@@ -87,10 +87,12 @@ public class EstadoController implements Serializable {
 
 	public void excluir(ActionEvent evento) {
 		try {
+			
+			estado = (Estado) evento.getComponent().getAttributes().get("estadoSelecionado");
 
 			EstadoModel estadoModel = new EstadoModel();
-			
 			this.setEstados(estadoModel.excluir(estado));
+			
 			Messages.addGlobalInfo("Estado removido com sucesso");
 		} catch (Exception erro) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar remover o estado");
@@ -101,6 +103,6 @@ public class EstadoController implements Serializable {
 	public void editar(ActionEvent evento) {
 
 		estado = (Estado) evento.getComponent().getAttributes().get("estadoSelecionado");
-
+		Messages.addGlobalInfo("Estado alterado com sucesso");
 	}
 }

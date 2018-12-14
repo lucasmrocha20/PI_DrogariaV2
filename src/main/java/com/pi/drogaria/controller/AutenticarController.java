@@ -1,62 +1,45 @@
 package com.pi.drogaria.controller;
 
-import java.io.IOException;
+import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
-import org.omnifaces.util.Faces;
-import org.omnifaces.util.Messages;
-
-import com.pi.drogaria.DAO.UsuarioDAO;
-import com.pi.drogaria.model.entidades.Pessoa;
 import com.pi.drogaria.model.entidades.Usuario;
 import com.pi.drogaria.model.entidades.UsuarioModel;
 
 @ManagedBean
 @SessionScoped
-public class AutenticarController {
+public class AutenticarController{
 
-	private Usuario usuario;
-	private Usuario usuarioLogado;
 	
-	public Usuario getUsuario() {
-		return usuario;
+	public AutenticarController() {
+		
 	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
+	
 	public Usuario getUsuarioLogado() {
-		return usuarioLogado;
+		return (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
 	}
-
-	public void setUsuaripoLogado(Usuario usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
+	
+	public void setUsuarioLogado(Usuario usuarioLogado) {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", usuarioLogado);
 	}
-
-	@PostConstruct
-	public void iniciar() {
-		usuario = new Usuario();
-//		usuario.setCodigoPessoa(new Pessoa(){
-//		});
-	}
-
-	public void autenticar(){
-		try{
-			UsuarioModel usuarioModel = new UsuarioModel();
-//			usuarioLogado = usuarioModel.autenticar(usuario.getCodigoPessoa().getClass(), usuario.getSenha());
-			
-			usuarioLogado = usuarioModel.autenticar(usuario.getCpf(), usuario.getSenha());
-			if(usuarioLogado == null){
-				Messages.addGlobalError("CPF ou SENHA incorreto");
-				return;
+	
+	public String realizarLoginusuario(String cpf, String senha) {
+		String ret = "";
+		List<Usuario> usuario = new UsuarioModel().listar();
+		
+		for( Usuario u : usuario) {
+			if(u.getCpf().equals(cpf)) {
+				if(u.getSenha().equals(senha)) {
+					this.setUsuarioLogado(u);
+					ret = "template.xhtml";
+				}
+				break;
 			}
-		Faces.redirect("./pages/templates/template.xhtml");
-	}catch(IOException erro){
-		Messages.addGlobalError(erro.getMessage());
-	 }
+		}
+		return ret;
+		
 	}
 }

@@ -1,21 +1,32 @@
 package com.pi.drogaria.model.entidades;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", length = 1, discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("p")
 @Table(name = "Pessoa")
 public class Pessoa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int codigoPessoa;
+
+	@Column(insertable = false, updatable = false)
+	private String type;
 
 	@Column(length = 50, nullable = false)
 	private String nome;
@@ -53,7 +64,7 @@ public class Pessoa {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cidade cidade;
-		
+
 	public String getNome() {
 		return nome;
 	}
@@ -158,6 +169,22 @@ public class Pessoa {
 		this.codigoPessoa = codigoPessoa;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "Pessoa [codigoPessoa=" + codigoPessoa + ", type=" + type + ", nome=" + nome + ", cpf=" + cpf + ", rg="
+				+ rg + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cep=" + cep + ", complemento="
+				+ complemento + ", telefone=" + telefone + ", celular=" + celular + ", email=" + email + ", cidade="
+				+ cidade + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -175,6 +202,7 @@ public class Pessoa {
 		result = prime * result + ((rg == null) ? 0 : rg.hashCode());
 		result = prime * result + ((rua == null) ? 0 : rua.hashCode());
 		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -249,7 +277,11 @@ public class Pessoa {
 				return false;
 		} else if (!telefone.equals(other.telefone))
 			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
 		return true;
 	}
-
 }

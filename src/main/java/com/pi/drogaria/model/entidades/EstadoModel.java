@@ -1,6 +1,7 @@
 package com.pi.drogaria.model.entidades;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.pi.drogaria.DAO.EstadoDAO;
@@ -30,6 +31,8 @@ public class EstadoModel {
 		return states;
 	}
 
+	
+	//criar interator dos metodos em todos os model.
 	private List<Estado> getListEstado(List<Object> estados) {
 		List<Estado> states = new ArrayList<>();
 

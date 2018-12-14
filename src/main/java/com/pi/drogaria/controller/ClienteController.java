@@ -20,8 +20,11 @@ import com.pi.drogaria.model.entidades.PessoaModel;
 @ManagedBean
 @ViewScoped
 public class ClienteController implements Serializable {
+	
 	private Cliente cliente = new Cliente();
+	
 	private List<Cliente> clientes;
+	
 	private Pessoa selectedPessoa = new Pessoa();
 
 	public Cliente getCliente() {
@@ -63,8 +66,8 @@ public class ClienteController implements Serializable {
 			List<Pessoa> pessoas = pessoaModel.listar();
 
 			List<Pessoa> people = getListPessoa(pessoas);			
-			//this.setPessoa((Pessoa) people);
-
+//			this.setSelectedPessoa((Pessoa)people);
+			
 		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar criar um novo cliente");
 			ex.printStackTrace();

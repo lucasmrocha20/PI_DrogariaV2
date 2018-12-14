@@ -1,28 +1,39 @@
 package com.pi.drogaria.DAO;
 
-import org.apache.shiro.crypto.hash.SimpleHash;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Order;
 
 import com.pi.drogaria.model.entidades.Usuario;
 import com.pi.drogaria.util.HibernateUtil;
 
 public class UsuarioDAO extends DAOGenerico {
-	public Usuario autenticar(String cpf, String senha) {
 
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+	// Lista para ordernar no cadastro por ordem alfabética.
+
+	@SuppressWarnings("unchecked")
+	public List<Usuario> listarOrdenado() {
+
+		Session sessao = HibernateUtil.getInstance().getSessionFactory().openSession();
 
 		try {
 			Criteria consulta = sessao.createCriteria(Usuario.class);
+
 			consulta.createAlias("pessoa", "p");
-			consulta.add(Restrictions.eq("p.cpf", cpf));
-			SimpleHash hash = new SimpleHash("md5", senha);
-			consulta.add(Restrictions.eq("senha", hash.toHex()));
-			Usuario resultado = (Usuario) consulta.uniqueResult();
+
+			consulta.addOrder(Order.asc("p.nome"));
+
+			List<Usuario> resultado = consulta.list();
+
 			return resultado;
-		} catch (Exception erro) {
+
+		} catch (RuntimeException erro) {
+
 			throw erro;
+
 		} finally {
 			sessao.close();
 		}

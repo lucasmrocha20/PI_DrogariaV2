@@ -7,21 +7,26 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.pi.drogaria.util.HibernateUtil;
 
 public class DAOGenerico implements DAO<Object> {
+	
+	private SessionFactory sessionFactory;
+
 	public DAOGenerico() {
+		this.sessionFactory = HibernateUtil.getInstance().getSessionFactory();
 	}
 
 	@Override
 	public void salvar(Object Object) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		Transaction transacao = null;
+		Session sessao = this.sessionFactory.openSession();
+
+		Transaction transacao = sessao.beginTransaction();
 		try {
-			transacao = sessao.beginTransaction();
 			sessao.save(Object);
 			transacao.commit();
 		} catch (Exception erro) {
@@ -36,12 +41,11 @@ public class DAOGenerico implements DAO<Object> {
 
 	@Override
 	public List<Object> listar(Class clazz) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Session sessao = this.sessionFactory.openSession();
 		try {
 			CriteriaQuery<Object> query = sessao.getCriteriaBuilder().createQuery(clazz);
 
-			Root<Object> root =  query.from(clazz);
-
+			Root<Object> root = query.from(clazz);
 
 			List<Object> resultado = sessao.createQuery(query.select(root)).getResultList();
 			return resultado;
@@ -55,7 +59,7 @@ public class DAOGenerico implements DAO<Object> {
 	// Lista para ordernar no cadastro por ordem alfabética.
 	@Override
 	public List<Object> listar(String campoOrdenacao, Class clazz) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Session sessao = this.sessionFactory.openSession();
 		try {
 
 			CriteriaQuery<Object> query = sessao.getCriteriaBuilder().createQuery(clazz);
@@ -74,7 +78,7 @@ public class DAOGenerico implements DAO<Object> {
 
 	@Override
 	public Object buscar(Long codigo) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Session sessao = this.sessionFactory.openSession();
 		try {
 			CriteriaBuilder builder = sessao.getCriteriaBuilder();
 
@@ -93,10 +97,10 @@ public class DAOGenerico implements DAO<Object> {
 
 	@Override
 	public void excluir(Object Object) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		Transaction transacao = null;
+		Session sessao = this.sessionFactory.openSession();
+
+		Transaction transacao = sessao.beginTransaction();
 		try {
-			transacao = sessao.beginTransaction();
 			sessao.delete(Object);
 			transacao.commit();
 		} catch (Exception erro) {
@@ -111,10 +115,10 @@ public class DAOGenerico implements DAO<Object> {
 
 	@Override
 	public void editar(Object Object) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		Transaction transacao = null;
+		Session sessao = this.sessionFactory.openSession();
+
+		Transaction transacao = sessao.beginTransaction();
 		try {
-			transacao = sessao.beginTransaction();
 			sessao.update(Object);
 			transacao.commit();
 		} catch (Exception erro) {
@@ -130,10 +134,11 @@ public class DAOGenerico implements DAO<Object> {
 	// MERGE serve para tanto para salvar quanto para editar.
 	@Override
 	public void merge(Object object) {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		Transaction transacao = null;
+
+		Session sessao = this.sessionFactory.openSession();
+
+		Transaction transacao = sessao.beginTransaction();
 		try {
-			transacao = sessao.beginTransaction();
 			sessao.merge(object);
 			transacao.commit();
 		} catch (Exception erro) {

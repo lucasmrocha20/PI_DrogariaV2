@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-import org.hibernate.HibernateException;
 import org.omnifaces.util.Messages;
 
 import com.pi.drogaria.DAO.FabricanteDAO;
@@ -86,7 +85,8 @@ public class ProdutoController implements Serializable{
 			ProdutoModel produtoModel = new ProdutoModel();
 			this.setProdutos(produtoModel.editar(produto));
 			
-		} catch (HibernateException ex) {
+			Messages.addGlobalInfo("Produto alterado com sucesso");
+		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um produto");
 			ex.printStackTrace();
 		}	

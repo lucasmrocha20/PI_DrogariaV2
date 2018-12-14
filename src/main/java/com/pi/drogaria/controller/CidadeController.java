@@ -134,6 +134,7 @@ public class CidadeController implements Serializable {
 			CidadeModel cidadeModel = new CidadeModel();
 			this.setCidades(cidadeModel.editar(cidade));
 			
+			Messages.addGlobalInfo("Cidade alterada com sucesso");
 		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma cidade");
 			ex.printStackTrace();

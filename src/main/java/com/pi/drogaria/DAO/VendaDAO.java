@@ -14,14 +14,12 @@ public class VendaDAO extends DAOGenerico {
 
 	public void salvar(Venda venda, List<ItemVenda> itensVenda) {
 
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Session sessao = HibernateUtil.getInstance().getSessionFactory().openSession();
 
 		Transaction transacao = null;
 
 		try {
-
 			transacao = sessao.beginTransaction();
-
 			sessao.save(venda);
 
 			for (int posicao = 0; posicao < itensVenda.size(); posicao++) {
@@ -31,9 +29,7 @@ public class VendaDAO extends DAOGenerico {
 				itemVenda.setVenda(venda);
 
 				sessao.save(itemVenda);
-
 			}
-
 			transacao.commit();
 
 		} catch (HibernateException erro) {

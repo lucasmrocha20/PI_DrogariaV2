@@ -11,15 +11,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-import org.hibernate.HibernateException;
 import org.omnifaces.util.Messages;
 
-import com.pi.drogaria.DAO.ClienteDAO;
 import com.pi.drogaria.DAO.ProdutoDAO;
 import com.pi.drogaria.DAO.VendaDAO;
 import com.pi.drogaria.model.entidades.Cliente;
+import com.pi.drogaria.model.entidades.ClienteModel;
 import com.pi.drogaria.model.entidades.ItemVenda;
+import com.pi.drogaria.model.entidades.Pessoa;
 import com.pi.drogaria.model.entidades.Produto;
+import com.pi.drogaria.model.entidades.Usuario;
 import com.pi.drogaria.model.entidades.UsuarioModel;
 import com.pi.drogaria.model.entidades.Venda;
 
@@ -27,17 +28,24 @@ import com.pi.drogaria.model.entidades.Venda;
 @ManagedBean
 @ViewScoped
 public class VendaController implements Serializable {
+	
 	private Venda venda = new Venda();
 	
+	private Pessoa selectedPessoa = new Pessoa();
+	
+	private Cliente cliente = new Cliente();
+	private Usuario usuario = new Usuario();
+	
+	ClienteModel clienteModel = new ClienteModel();
 	UsuarioModel usuarioModel = new UsuarioModel();
-
-	ClienteDAO clienteDAO = new ClienteDAO();
-
+	
 	private List<Produto> produtos;
 
 	private List<ItemVenda> itensVenda;
 
 	private List<Cliente> clientes;
+
+	private List<Usuario> usuarios;
 
 	public Venda getVenda() {
 		return venda;
@@ -71,12 +79,12 @@ public class VendaController implements Serializable {
 		this.clientes = clientes;
 	}
 
-	public UsuarioModel getUsuarioModel() {
-		return usuarioModel;
+	public List<Usuario> getUsuarios() {
+		return usuarios;
 	}
 
-	public void setUsuarioModel(UsuarioModel usuarioModel) {
-		this.usuarioModel = usuarioModel;
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	@PostConstruct
@@ -89,11 +97,11 @@ public class VendaController implements Serializable {
 
 			List<Object> produtos = produtoDAO.listar("descricao", Produto.class);
 
-			List<Produto> prod = getListProduto(produtos);			
+			List<Produto> prod = getListProduto(produtos);
 			this.setProdutos(prod);
 
 			itensVenda = new ArrayList<>();
-		} catch (HibernateException ex) {
+		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar carregar a tela de vendas");
 			ex.printStackTrace();
 		}
@@ -166,18 +174,37 @@ public class VendaController implements Serializable {
 
 	public void finalizar() {
 		try {
+			usuario.copiaDados(this.selectedPessoa);
+			cliente.copiaDados(this.selectedPessoa);
+			
+			this.setClientes(clienteModel.listar());
+			this.setUsuarios(usuarioModel.listar());
+			
 			venda.setHorario(new Date());
 
 			venda.setCliente(null);
 
 			venda.setUsuario(null);
 
-
-		} catch (HibernateException erro) {
-		Messages.addGlobalError("Ocorreu um erro ao tentar finalizar a venda");
+			
+						
+			Messages.addGlobalInfo("Venda finalizada com sucesso!");
+		} catch (Exception erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar finalizar a venda");
 			erro.printStackTrace();
 		}
 	}
+	
+	
+	private List<Pessoa> getListPessoa(List<Pessoa> pessoas) {
+		List<Pessoa> people = new ArrayList<>();
+		
+		for (Object obj : pessoas) {
+			people.add((Pessoa) obj);
+		}
+		return people;
+	}
+
 
 	public void salvar() {
 		try {
@@ -200,22 +227,22 @@ public class VendaController implements Serializable {
 
 			List<Object> produtos = produtoDAO.listar("descricao", Produto.class);
 
-			List<Produto> prod = getListProduto(produtos);			
+			List<Produto> prod = getListProduto(produtos);
 			this.setProdutos(prod);
 
 			itensVenda = new ArrayList<>();
 
 			Messages.addGlobalInfo("Venda realizada com sucesso");
 
-		} catch (HibernateException erro) {
+		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a venda");
 			erro.printStackTrace();
 		}
 	}
-	
+
 	private List<Produto> getListProduto(List<Object> produtos) {
 		List<Produto> prod = new ArrayList<>();
-		
+
 		for (Object obj : produtos) {
 			prod.add((Produto) obj);
 		}

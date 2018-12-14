@@ -1,37 +1,25 @@
 package com.pi.drogaria.model.entidades;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
 @Entity
+@DiscriminatorValue(value = "U")
 public class Usuario extends Pessoa{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int codigoUsuario;
 	
-	@Column(length = 32, nullable = false)
+	@Column(length = 32)
 	private String senha;
 
-	@Column(nullable = false)
+	@Column
 	private Character tipo;
 
-	@Column(nullable = false)
+	@Column
 	private Boolean ativo;
 
-	public int getCodigoUsuario() {
-		return codigoUsuario;
-	}
-	
-	public void setCodigoUsuario(int codigoUsuario) {
-		this.codigoUsuario = codigoUsuario;
-	}
 	
 	public String getSenha() {
 		return senha;

@@ -14,12 +14,13 @@ import com.pi.drogaria.model.entidades.Estado;
 import com.pi.drogaria.util.HibernateUtil;
 
 public class CidadeDAO extends DAOGenerico {
+		
 	// Para quando fizer cadastro da pessoa selecionando estado, aparecer a
 	// cidade relacionado ao estado.
 	
 	public List<Cidade> buscarPorEstado(Estado estado2) {
 
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Session sessao =  HibernateUtil.getInstance().getSessionFactory().openSession();
 		try {
 			CriteriaBuilder builder = sessao.getCriteriaBuilder();
 			CriteriaQuery<Cidade> criteriaQuery = builder.createQuery(Cidade.class);

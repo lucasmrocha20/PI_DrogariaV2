@@ -31,7 +31,7 @@ public class PessoaController implements Serializable {
 	private List<Cidade> cidades;
 
 	PessoaModel pessoaModel = new PessoaModel();
-	
+
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
@@ -75,11 +75,11 @@ public class PessoaController implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			
+
 			PessoaModel pessoaModel = new PessoaModel();
-			
+
 			this.setPessoas(pessoaModel.listar());
-			
+
 		} catch (Exception ex) {
 			Messages.addGlobalError("Erro ao listar pessoas");
 			ex.printStackTrace();
@@ -88,30 +88,34 @@ public class PessoaController implements Serializable {
 
 	public void novo() {
 		try {
-
-			estado = new Estado();
-
+			
+			
 			EstadoDAO estadoDAO = new EstadoDAO();
 			List<Object> estados = estadoDAO.listar("nome", Estado.class);
 
 			List<Estado> states = getListEstado(estados);
 			this.setEstados(states);
-
+			
+			pessoa = new Pessoa();
+			estado = new Estado();
 			cidades = new ArrayList<Cidade>();
+			
 		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu erro ao gerar nova Pessoa.");
 			ex.printStackTrace();
 		}
 	}
 
-	public void editar(ActionEvent evento) {
+	public void editar(ActionEvent evento){
+
 		try {
 			pessoa = (Pessoa) evento.getComponent().getAttributes().get("pessoaSelecionada");
-			
+
 			PessoaModel pessoaModel = new PessoaModel();
-			
+
 			this.setPessoas(pessoaModel.editar(pessoa));
 			
+			Messages.addGlobalInfo("Pessoa alterada com sucesso");
 		} catch (Exception ex) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar uma pessoa.");
 			ex.printStackTrace();
@@ -120,11 +124,12 @@ public class PessoaController implements Serializable {
 
 	public void salvar() {
 		try {
-			
+
 			PessoaModel pessoaModel = new PessoaModel();
-			
+
 			this.setPessoas(pessoaModel.salvar(pessoa));
-		
+			
+			Messages.addGlobalInfo("Pessoa salvo com sucesso.");
 		} catch (Exception ex) {
 			Messages.addGlobalError("Ocorreu erro ao salvar.");
 			ex.printStackTrace();
@@ -137,7 +142,7 @@ public class PessoaController implements Serializable {
 			pessoa = (Pessoa) evento.getComponent().getAttributes().get("pessoaSelecionada");
 
 			PessoaDAO pessoaDAO = new PessoaDAO();
-			pessoaDAO.excluir(pessoa);
+			this.setPessoas(pessoaModel.excluir(pessoa));
 
 			List<Object> pessoas = pessoaDAO.listar(Pessoa.class);
 
@@ -150,7 +155,7 @@ public class PessoaController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	private List<Pessoa> getListPessoa(List<Object> pessoas) {
 		List<Pessoa> people = new ArrayList<>();
 
@@ -159,9 +164,10 @@ public class PessoaController implements Serializable {
 		}
 		return people;
 	}
+
 	private List<Estado> getListEstado(List<Object> estados) {
 		List<Estado> states = new ArrayList<>();
-		
+
 		for (Object obj : estados) {
 			states.add((Estado) obj);
 		}

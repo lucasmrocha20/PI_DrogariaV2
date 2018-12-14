@@ -1,27 +1,34 @@
 package com.pi.drogaria.util;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
-	private static SessionFactory fabricaDeSessoes = criarFabricaDeSessoes();
-	public static SessionFactory getFabricaDeSessoes() {
-		return fabricaDeSessoes;
+	private SessionFactory sessionFactory;
+	
+	private static HibernateUtil instance;
+	
+	private HibernateUtil() {
+		try {
+			sessionFactory = new Configuration().configure().buildSessionFactory();
+		} catch (Throwable ex) {
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
+		} 	
 	}
-	private static SessionFactory criarFabricaDeSessoes() {
-		try{ 
-			StandardServiceRegistry standardRegistry =
-					new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-			Metadata metaData =
-					new MetadataSources(standardRegistry).getMetadataBuilder().build();
-			fabricaDeSessoes = metaData.getSessionFactoryBuilder().build();
-		} catch (Throwable th) {
-			System.err.println("A fábrica de sessões não pode ser criada." + th);
-			throw new ExceptionInInitializerError(th);
+
+	public static HibernateUtil getInstance() {
+		
+		if (instance == null) {
+			instance = new HibernateUtil();
+			
 		}
-		return fabricaDeSessoes;
+		
+		return instance;
+	}
+	
+	public SessionFactory getSessionFactory() {
+				
+		return sessionFactory;
 	}
 }
